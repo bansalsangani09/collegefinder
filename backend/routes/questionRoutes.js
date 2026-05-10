@@ -5,13 +5,13 @@ const { auth } = require('../middleware/auth');
 
 const generateAIAnswer = async (prompt) => {
   console.log('--- Gemini AI Request Start ---');
-  const apiUrl = process.env.GEMINI_API_URL;
+  // Use environment variable if available, otherwise fallback to the provided URL
+  const apiUrl = process.env.GEMINI_API_URL || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
   const apiKey = process.env.GOOGLE_API_KEY;
 
-  if (!apiUrl || !apiKey) {
-    console.error('Missing configuration: URL or API Key is undefined.');
-    console.log('URL:', apiUrl);
-    console.log('API Key Present:', !!apiKey);
+  if (!apiKey) {
+    console.error('Missing configuration: GOOGLE_API_KEY is undefined.');
+    console.log('API Key Present: false');
     return null;
   }
 
