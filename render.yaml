@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: college-platform-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # Requires user to set it via Render Dashboard
+      - key: JWT_SECRET
+        sync: false # Requires user to set it via Render Dashboard
+      - key: CLIENT_URL
+        sync: false # Will be set to the Vercel URL

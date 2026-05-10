@@ -1,0 +1,30 @@
+import { createContext, useContext, useState } from 'react';
+
+const CompareContext = createContext(null);
+
+export function CompareProvider({ children }) {
+  const [compareList, setCompareList] = useState([]);
+
+  const addToCompare = (college) => {
+    if (compareList.length >= 3) return false;
+    if (compareList.find((c) => c._id === college._id)) return false;
+    setCompareList((prev) => [...prev, college]);
+    return true;
+  };
+
+  const removeFromCompare = (id) => {
+    setCompareList((prev) => prev.filter((c) => c._id !== id));
+  };
+
+  const clearCompare = () => setCompareList([]);
+
+  const isInCompare = (id) => compareList.some((c) => c._id === id);
+
+  return (
+    <CompareContext.Provider value={{ compareList, addToCompare, removeFromCompare, clearCompare, isInCompare }}>
+      {children}
+    </CompareContext.Provider>
+  );
+}
+
+export const useCompare = () => useContext(CompareContext);
