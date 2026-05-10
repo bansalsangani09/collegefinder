@@ -2,9 +2,61 @@ const express = require('express');
 const router = express.Router();
 const Question = require('../models/Question');
 const { auth } = require('../middleware/auth');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+const generateAIAnswer = async (prompt) => {
+  console.log('--- Gemini AI Request Start ---');
+  const apiUrl = process.env.GEMINI_API_URL;
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  if (!apiUrl || !apiKey) {
+    console.error('Missing configuration: URL or API Key is undefined.');
+    console.log('URL:', apiUrl);
+    console.log('API Key Present:', !!apiKey);
+    return null;
+  }
+
+  try {
+    console.log('Using URL:', apiUrl);
+    console.log('Prompt:', prompt.substring(0, 100) + '...');
+
+    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: prompt }]
+        }]
+      })
+    });
+
+    console.log('Response Status:', response.status, response.statusText);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Gemini API Error Response:', JSON.stringify(errorData, null, 2));
+      throw new Error(errorData.error?.message || 'Gemini API error');
+    }
+
+    const data = await response.json();
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+    
+    if (aiResponse) {
+      console.log('AI Response successfully generated.');
+    } else {
+      console.warn('AI Response was empty or candidates missing.');
+      console.log('Raw Data:', JSON.stringify(data, null, 2));
+    }
+
+    console.log('--- Gemini AI Request End ---');
+    return aiResponse;
+  } catch (error) {
+    console.error('Gemini REST API Fatal Error:', error.message);
+    console.log('--- Gemini AI Request End (Failed) ---');
+    return null;
+  }
+};
 
 // GET /api/questions
 router.get('/', async (req, res) => {
@@ -32,10 +84,8 @@ router.post('/', auth, async (req, res) => {
     });
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
       const prompt = `Please provide a concise and helpful answer (around 50 words) to the following question about colleges:\nTitle: ${title}\nDescription: ${description}`;
-      const result = await model.generateContent(prompt);
-      const aiResponse = result.response.text();
+      const aiResponse = await generateAIAnswer(prompt);
 
       if (aiResponse) {
         question.answers.push({
@@ -44,9 +94,10 @@ router.post('/', auth, async (req, res) => {
           date: new Date()
         });
         await question.save();
+        console.log('AI Answer saved to database.');
       }
     } catch (aiError) {
-      console.error('Error generating AI answer:', aiError);
+      console.error('Error in AI integration flow:', aiError);
     }
 
     res.status(201).json({ success: true, data: question });
@@ -102,10 +153,8 @@ router.put('/:id', auth, async (req, res) => {
 
     // Regenerate AI Answer for the updated question
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
       const prompt = `Please provide an updated concise and helpful answer (around 50 words) to the following updated question about colleges:\nTitle: ${question.title}\nDescription: ${question.description}`;
-      const result = await model.generateContent(prompt);
-      const aiResponse = result.response.text();
+      const aiResponse = await generateAIAnswer(prompt);
 
       if (aiResponse) {
         // Find existing Gemini answer to update it, or add new if not found
@@ -120,9 +169,10 @@ router.put('/:id', auth, async (req, res) => {
             date: new Date()
           });
         }
+        console.log('AI Answer updated in database.');
       }
     } catch (aiError) {
-      console.error('Error regenerating AI answer on update:', aiError);
+      console.error('Error regenerating AI answer on update flow:', aiError);
     }
 
     await question.save();
