@@ -17,3 +17,5 @@ services:
         sync: false # Requires user to set it via Render Dashboard
       - key: CLIENT_URL
         value: https://collegefinder-seven.vercel.app
+      - key: GOOGLE_API_KEY
+        sync: false # Set via Render Dashboard for security
