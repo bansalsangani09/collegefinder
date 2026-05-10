@@ -143,9 +143,11 @@ npm run dev
 ## 🚢 Deployment
 
 ### Frontend Deployment
+Frontend URL: [https://collegefinder-seven.vercel.app/](https://collegefinder-seven.vercel.app/)
 Deploy frontend on: **Vercel**
 
 ### Backend Deployment
+Backend URL: [https://collegefinder-dcqx.onrender.com](https://collegefinder-dcqx.onrender.com)
 Deploy backend on: **Render**
 
 ### Database

@@ -81,7 +81,7 @@ export default function Saved() {
             </div>
             <div className="flex items-end justify-between gap-8">
               <div>
-                <h1 className="text-5xl md:text-7xl font-black text-slate-950 tracking-tighter leading-none mb-4">Saved Institutions</h1>
+                <h1 className="text-4xl md:text-7xl font-black text-slate-950 tracking-tighter leading-none mb-4">Saved Institutions</h1>
                 <p className="text-slate-500 font-bold uppercase tracking-widest text-xs flex items-center gap-3">
                   <Bookmark size={14} className="text-indigo-500" /> {colleges.length} PREMIUM SELECTIONS IN YOUR LIST
                 </p>

@@ -148,7 +148,7 @@ export default function CollegeDetail() {
                       </span>
                     )}
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 leading-none drop-shadow-2xl">{college.name}</h1>
+                  <h1 className="text-4xl md:text-7xl font-black text-white tracking-tighter mb-6 leading-none drop-shadow-2xl">{college.name}</h1>
                   <div className="flex flex-wrap items-center gap-8 text-white/80">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20 backdrop-blur-sm">
@@ -211,7 +211,7 @@ export default function CollegeDetail() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-8 mb-12 border-b border-slate-100">
+        <div className="flex gap-4 md:gap-8 mb-12 border-b border-slate-100 overflow-x-auto custom-scrollbar whitespace-nowrap">
           {TABS.map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`pb-6 text-xs font-black uppercase tracking-[0.2em] transition-all relative ${
@@ -278,7 +278,8 @@ export default function CollegeDetail() {
 
           {tab === 'Courses' && (
             <div className="bg-white rounded-[3rem] overflow-hidden border border-slate-100 shadow-sm">
-              <table className="w-full text-left">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left min-w-[600px]">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
                     <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Course Specialization</th>
@@ -298,6 +299,7 @@ export default function CollegeDetail() {
                   )}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
 

@@ -17,7 +17,7 @@ export default function CompareBar() {
             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Compare ({compareList.length}/3)</span>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
             {compareList.map((c) => (
               <div key={c._id} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-700">
                 <span className="line-clamp-1 max-w-[80px]">{c.name?.split(' ')[0]}</span>

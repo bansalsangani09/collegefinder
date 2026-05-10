@@ -126,7 +126,7 @@ export default function CollegeForm() {
           <Link to="/admin" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-6 text-slate-500 hover:text-indigo-400 transition-colors">
             <ArrowLeft size={14} /> Back to Dashboard
           </Link>
-          <h1 className="text-5xl font-black text-slate-950 tracking-tighter">
+          <h1 className="text-4xl md:text-5xl font-black text-slate-950 tracking-tighter">
             {isEdit ? 'Update Institution' : 'New Institution'}
           </h1>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-2">Fill in the details to list the college on the platform</p>
@@ -220,7 +220,7 @@ export default function CollegeForm() {
                 <Briefcase size={20} /> Placements & Recruiters
               </h2>
               <div className="flex flex-col gap-6">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Avg LPA</label>
                     <input className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 focus:outline-none focus:ring-2 ring-indigo-500/50" type="number" step="0.1" value={form.placement.averagePackage}
