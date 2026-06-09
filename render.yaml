@@ -19,5 +19,3 @@ services:
         value: https://collegefinder-seven.vercel.app
       - key: GOOGLE_API_KEY
         sync: false # Set via Render Dashboard for security
-      - key: GEMINI_API_URL
-        value: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
